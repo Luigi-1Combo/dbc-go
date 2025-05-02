@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains examples of how to use the Meteora DBC program in Go. Powered by [solana-go](https://github.com/gagliardetto/solana-go).
+This repository contains examples of how to use the Meteora Dynamic Bonding Curve program in Go. Powered by [solana-go](https://github.com/gagliardetto/solana-go).
 
 ## Prerequisites
 
@@ -10,10 +10,18 @@ This repository contains examples of how to use the Meteora DBC program in Go. P
 
 ## Usage
 
+1. Install dependencies
+
 ```bash
 go mod tidy
 ```
 
+2. Run the examples
+
 ```bash
-go run main.go
+go run examples/<file-name>.go
 ```
+
+## Examples
+
+- [Create a pool and swap](./examples/create-pool-and-swap.go)
