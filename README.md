@@ -24,4 +24,5 @@ go run examples/<file-name>.go
 
 ## Examples
 
-- [Create a pool and swap](./examples/create-pool-and-swap.go)
+- [Create a pool and swap SOL](./examples/CreatePoolAndSwapSol.go)
+- [Create a pool and swap USDC](./examples/CreatePoolAndSwapUsdc.go)
