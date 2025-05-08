@@ -21,16 +21,16 @@ const (
 	DevnetRPC = "https://devnet.helius-rpc.com/?api-key=YOUR_API_KEY"
 )
 
-func main() {
+func CreatePoolAndSwapSol() {
 	ctx := context.Background()
 	client := rpc.New(DevnetRPC)
 
 	// 1) load payer and pool creator PKs
-	payer := solana.MustPrivateKeyFromBase58("PAYER_PRIVATE_KEY")
-	poolCreator := solana.MustPrivateKeyFromBase58("POOL_CREATOR_PRIVATE_KEY")
+	payer := solana.MustPrivateKeyFromBase58("YOUR_PAYER_PRIVATE_KEY")
+	poolCreator := solana.MustPrivateKeyFromBase58("YOUR_POOL_CREATOR_PRIVATE_KEY")
 
 	// 2) config key (generate on launch.meteora.ag)
-	config := solana.MustPublicKeyFromBase58("CONFIG_PUBLIC_KEY")
+	config := solana.MustPublicKeyFromBase58("YOUR_CONFIG_PUBLIC_KEY")
 
 	// 3) generate baseMint (can be vanity)
 	baseMintWallet := solana.NewWallet()
@@ -41,11 +41,11 @@ func main() {
 	quoteMint := solana.MustPublicKeyFromBase58(common.NativeMint)
 
 	userInputTokenAccount, _, _ := solana.FindAssociatedTokenAddress(
-		payer.PublicKey(),
+		poolCreator.PublicKey(),
 		quoteMint,
 	)
 	userOutputTokenAccount, _, _ := solana.FindAssociatedTokenAddress(
-		payer.PublicKey(),
+		poolCreator.PublicKey(),
 		baseMint,
 	)
 
@@ -79,14 +79,14 @@ func main() {
 	// create WSOL associated token account (ATA)
 	createWSOLIx := associatedtokenaccount.NewCreateInstruction(
 		payer.PublicKey(),
-		payer.PublicKey(),
+		poolCreator.PublicKey(),
 		quoteMint,
 	).Build()
 
 	// wrap SOL by transferring lamports into the WSOL ATA
 	wrapSOLIx := system.NewTransferInstruction(
 		totalAmount,
-		payer.PublicKey(),
+		poolCreator.PublicKey(),
 		userInputTokenAccount,
 	).Build()
 
@@ -98,7 +98,7 @@ func main() {
 	// create base-mint ATA for swap output
 	createBaseAtaIx := associatedtokenaccount.NewCreateInstruction(
 		payer.PublicKey(),
-		payer.PublicKey(),
+		poolCreator.PublicKey(),
 		baseMint,
 	).Build()
 
@@ -112,7 +112,7 @@ func main() {
 		quoteVault,
 		baseMint,
 		quoteMint,
-		payer.PublicKey(),
+		poolCreator.PublicKey(),
 		userInputTokenAccount, // using input token account as referral
 		amountIn,
 		1, // minOut
@@ -121,8 +121,8 @@ func main() {
 	// close the WSOL account after swap to recover rent
 	closeWSOLIx := token.NewCloseAccountInstruction(
 		userInputTokenAccount,
-		payer.PublicKey(),
-		payer.PublicKey(),
+		poolCreator.PublicKey(),
+		poolCreator.PublicKey(),
 		[]solana.PublicKey{},
 	).Build()
 
@@ -189,4 +189,8 @@ func main() {
 		}
 	}
 	log.Fatalf("Transaction confirmation timeout")
+}
+
+func main() {
+	CreatePoolAndSwapSol()
 }
