@@ -191,6 +191,6 @@ func CreatePoolAndSwapSol() {
 	log.Fatalf("Transaction confirmation timeout")
 }
 
-func main() {
-	CreatePoolAndSwapSol()
-}
+// func main() {
+// 	CreatePoolAndSwapSol()
+// }
