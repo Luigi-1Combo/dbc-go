@@ -2,7 +2,10 @@ module github.com/dannwee/dbc-go
 
 go 1.21
 
-require github.com/gagliardetto/solana-go v1.8.4
+require (
+	github.com/gagliardetto/solana-go v1.8.4
+	lukechampine.com/uint128 v1.3.0
+)
 
 require (
 	contrib.go.opencensus.io/exporter/stackdriver v0.13.4 // indirect

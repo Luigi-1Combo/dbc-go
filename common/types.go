@@ -2,32 +2,53 @@ package common
 
 import (
 	"github.com/gagliardetto/solana-go"
+	"lukechampine.com/uint128"
 )
 
-// PoolFeesConfig represents the fee configuration for a pool
+type BaseFeeConfig struct {
+	CliffFeeNumerator uint64
+	PeriodFrequency   uint64
+	ReductionFactor   uint64
+	NumberOfPeriod    uint16
+	FeeSchedulerMode  uint8
+	Padding0          [5]uint8
+}
+
+type DynamicFeeConfig struct {
+	Initialized              uint8
+	Padding                  [7]uint8
+	MaxVolatilityAccumulator uint32
+	VariableFeeControl       uint32
+	BinStep                  uint16
+	FilterPeriod             uint16
+	DecayPeriod              uint16
+	ReductionFactor          uint16
+	Padding2                 [8]uint8
+	BinStepU128              uint128.Uint128
+}
+
 type PoolFeesConfig struct {
-	SwapFeeNumerator   uint64
-	SwapFeeDenominator uint64
+	BaseFee            BaseFeeConfig
+	DynamicFee         DynamicFeeConfig
+	Padding0           [5]uint64
+	Padding1           [6]uint8
+	ProtocolFeePercent uint8
+	ReferralFeePercent uint8
 }
 
 // LiquidityDistributionConfig represents the liquidity distribution configuration
 type LiquidityDistributionConfig struct {
-	TickIndex          int32
-	StartX             uint64
-	StartY             uint64
-	LiquidityParameter uint64
+	SqrtPrice uint128.Uint128
+	Liquidity uint128.Uint128
 }
 
-// LockedVestingConfig represents the locked vesting configuration
 type LockedVestingConfig struct {
-	PeriodInSeconds        uint64
-	NumberOfPeriods        uint8
-	PeriodsCliff           uint8
-	UnlockBeforeMigration  uint8
-	UnlockingBehavior      uint8
-	EnabledBeforeMigration uint8
-	EnabledAfterMigration  uint8
-	PaddingBuffer          [10]uint8
+	AmountPerPeriod                uint64
+	CliffDurationFromMigrationTime uint64
+	Frequency                      uint64
+	NumberOfPeriod                 uint64
+	CliffUnlockAmount              uint64
+	Padding                        uint64
 }
 
 // PoolConfig represents the pool configuration data structure
@@ -55,17 +76,11 @@ type PoolConfig struct {
 	SwapBaseAmount              uint64
 	MigrationQuoteThreshold     uint64
 	MigrationBaseThreshold      uint64
-	MigrationSqrtPrice          uint128
+	MigrationSqrtPrice          uint128.Uint128
 	LockedVestingConfig         LockedVestingConfig
 	PreMigrationTokenSupply     uint64
 	PostMigrationTokenSupply    uint64
-	Padding2                    [2]uint128
-	SqrtStartPrice              uint128
+	Padding2                    [2]uint128.Uint128
+	SqrtStartPrice              uint128.Uint128
 	Curve                       [20]LiquidityDistributionConfig
-}
-
-// uint128 is a custom type to handle 128-bit integers
-type uint128 struct {
-	Lo uint64
-	Hi uint64
 }

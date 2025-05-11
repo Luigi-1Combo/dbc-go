@@ -17,13 +17,9 @@ import (
 	"github.com/dannwee/dbc-go/instructions"
 )
 
-const (
-	DevnetRPC = "https://devnet.helius-rpc.com/?api-key=YOUR_API_KEY"
-)
-
 func CreatePoolAndSwapSol() {
 	ctx := context.Background()
-	client := rpc.New(DevnetRPC)
+	client := rpc.New("https://mainnet.helius-rpc.com/?api-key=c0b115fe-ab4f-4adc-a0c0-eac44cf8de6f")
 
 	// 1) load payer and pool creator PKs
 	payer := solana.MustPrivateKeyFromBase58("YOUR_PAYER_PRIVATE_KEY")
