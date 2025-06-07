@@ -27,9 +27,9 @@ func ClaimCreatorTradingFee(
 	binary.LittleEndian.PutUint64(buf[8:], maxBaseAmount)
 	binary.LittleEndian.PutUint64(buf[16:], maxQuoteAmount)
 
-	poolAuthority := solana.MustPublicKeyFromBase58(common.PoolAuthority)
 	tokenBaseProgram := solana.MustPublicKeyFromBase58(common.TokenProgram)
 	tokenQuoteProgram := solana.MustPublicKeyFromBase58(common.TokenProgram)
+	poolAuthority := helpers.DerivePoolAuthorityPDA()
 	eventAuthority := helpers.DeriveEventAuthorityPDA()
 
 	acctMeta := solana.AccountMetaSlice{

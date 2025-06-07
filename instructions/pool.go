@@ -34,9 +34,9 @@ func InitializeVirtualPoolWithSplToken(
 	}
 	data := append(append(append(disc, packString(name)...), packString(symbol)...), packString(uri)...)
 
-	poolAuthority := solana.MustPublicKeyFromBase58(common.PoolAuthority)
 	tokenQuoteProgram := solana.MustPublicKeyFromBase58(common.TokenProgram)
 	tokenProgram := solana.MustPublicKeyFromBase58(common.TokenProgram)
+	poolAuthority := helpers.DerivePoolAuthorityPDA()
 	eventAuthority := helpers.DeriveEventAuthorityPDA()
 
 	acctMeta := solana.AccountMetaSlice{

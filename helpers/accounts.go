@@ -46,16 +46,24 @@ func DeriveTokenVaultPDA(pool, mint solana.PublicKey) solana.PublicKey {
 	return pda
 }
 
-// DeriveEventAuthorityPDA derives the program event authority address
+// Derives the event authority PDA
 func DeriveEventAuthorityPDA() solana.PublicKey {
-	seed := [][]byte{
-		[]byte("__event_authority"),
-	}
-	pda, _, err := solana.FindProgramAddress(seed, solana.MustPublicKeyFromBase58(common.DbcProgramID))
+	seeds := [][]byte{[]byte("__event_authority")}
+	address, _, err := solana.FindProgramAddress(seeds, solana.MustPublicKeyFromBase58(common.DbcProgramID))
 	if err != nil {
-		log.Fatalf("find event authority PDA: %v", err)
+		panic(err)
 	}
-	return pda
+	return address
+}
+
+// Derives the pool authority PDA
+func DerivePoolAuthorityPDA() solana.PublicKey {
+	seeds := [][]byte{[]byte("pool_authority")}
+	address, _, err := solana.FindProgramAddress(seeds, solana.MustPublicKeyFromBase58(common.DbcProgramID))
+	if err != nil {
+		panic(err)
+	}
+	return address
 }
 
 // DeriveMintMetadataPDA derives the mint metadata address

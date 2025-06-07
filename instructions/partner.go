@@ -28,9 +28,9 @@ func ClaimPartnerTradingFee(
 	binary.LittleEndian.PutUint64(buf[8:], maxAmountA)
 	binary.LittleEndian.PutUint64(buf[16:], maxAmountB)
 
-	poolAuthority := solana.MustPublicKeyFromBase58(common.PoolAuthority)
 	tokenBaseProgram := solana.MustPublicKeyFromBase58(common.TokenProgram)
 	tokenQuoteProgram := solana.MustPublicKeyFromBase58(common.TokenProgram)
+	poolAuthority := helpers.DerivePoolAuthorityPDA()
 	eventAuthority := helpers.DeriveEventAuthorityPDA()
 
 	acctMeta := solana.AccountMetaSlice{
