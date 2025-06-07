@@ -84,3 +84,65 @@ type PoolConfig struct {
 	SqrtStartPrice              uint128.Uint128
 	Curve                       [20]LiquidityDistributionConfig
 }
+
+// VolatilityTracker represents the volatility tracker data structure
+type VolatilityTracker struct {
+	LastUpdateTimestamp   uint64
+	Padding               [8]uint8
+	SqrtPriceReference    uint128.Uint128
+	VolatilityAccumulator uint128.Uint128
+	VolatilityReference   uint128.Uint128
+}
+
+// PoolMetrics represents the metrics for a pool
+type PoolMetrics struct {
+	TotalProtocolBaseFee  uint64
+	TotalProtocolQuoteFee uint64
+	TotalTradingBaseFee   uint64
+	TotalTradingQuoteFee  uint64
+}
+
+// Pool represents the pool data structure
+type Pool struct {
+	VolatilityTracker          VolatilityTracker
+	Config                     solana.PublicKey
+	Creator                    solana.PublicKey
+	BaseMint                   solana.PublicKey
+	BaseVault                  solana.PublicKey
+	QuoteVault                 solana.PublicKey
+	BaseReserve                uint64
+	QuoteReserve               uint64
+	ProtocolBaseFee            uint64
+	ProtocolQuoteFee           uint64
+	PartnerBaseFee             uint64
+	PartnerQuoteFee            uint64
+	SqrtPrice                  uint128.Uint128
+	ActivationPoint            uint64
+	PoolType                   uint8
+	IsMigrated                 uint8
+	IsPartnerWithdrawSurplus   uint8
+	IsProtocolWithdrawSurplus  uint8
+	MigrationProgress          uint8
+	IsWithdrawLeftover         uint8
+	IsCreatorWithdrawSurplus   uint8
+	MigrationFeeWithdrawStatus uint8
+	Metrics                    PoolMetrics
+	FinishCurveTimestamp       uint64
+	CreatorBaseFee             uint64
+	CreatorQuoteFee            uint64
+	Padding1                   [7]uint64
+}
+
+// PoolFeeMetrics represents the fee metrics for a pool
+type PoolFeeMetrics struct {
+	Current struct {
+		PartnerBaseFee  uint64
+		PartnerQuoteFee uint64
+		CreatorBaseFee  uint64
+		CreatorQuoteFee uint64
+	}
+	Total struct {
+		TotalTradingBaseFee  uint64
+		TotalTradingQuoteFee uint64
+	}
+}

@@ -35,3 +35,50 @@ func GetPoolConfig(ctx context.Context, configAddress solana.PublicKey, rpcClien
 
 	return helpers.DeserializePoolConfig(data)
 }
+
+// GetPoolFeeMetrics fetches and returns the fee metrics for a pool
+func GetPoolFeeMetrics(ctx context.Context, poolAddress solana.PublicKey, rpcClient *solRpc.Client) (*common.PoolFeeMetrics, error) {
+	pool, err := GetPool(ctx, poolAddress, rpcClient)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get pool: %w", err)
+	}
+
+	if pool == nil {
+		return nil, fmt.Errorf("pool not found: %s", poolAddress.String())
+	}
+
+	metrics := &common.PoolFeeMetrics{}
+	metrics.Current.PartnerBaseFee = pool.PartnerBaseFee
+	metrics.Current.PartnerQuoteFee = pool.PartnerQuoteFee
+	metrics.Current.CreatorBaseFee = pool.CreatorBaseFee
+	metrics.Current.CreatorQuoteFee = pool.CreatorQuoteFee
+	metrics.Total.TotalTradingBaseFee = pool.Metrics.TotalTradingBaseFee
+	metrics.Total.TotalTradingQuoteFee = pool.Metrics.TotalTradingQuoteFee
+
+	return metrics, nil
+}
+
+// GetPool fetches and deserializes pool data from the Solana blockchain
+func GetPool(ctx context.Context, poolAddress solana.PublicKey, rpcClient *solRpc.Client) (*common.Pool, error) {
+	account, err := rpcClient.GetAccountInfo(ctx, poolAddress)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get pool account: %w", err)
+	}
+
+	if account == nil || account.Value == nil {
+		return nil, fmt.Errorf("pool account not found")
+	}
+
+	data := account.Value.Data.GetBinary()
+
+	if len(data) < 8 {
+		return nil, fmt.Errorf("data too short")
+	}
+
+	expectedDiscriminator := []byte{213, 224, 5, 209, 98, 69, 119, 92}
+	if !bytes.Equal(data[:8], expectedDiscriminator) {
+		return nil, fmt.Errorf("invalid discriminator, not a pool account")
+	}
+
+	return helpers.DeserializePool(data)
+}
