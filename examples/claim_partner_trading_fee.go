@@ -57,7 +57,7 @@ func ClaimPartnerTradingFee() {
 		).Build()
 	}
 
-	// Check if token B ATA exists
+	// check if token B ATA exists
 	accountInfo, err = client.GetAccountInfo(ctx, tokenBAccount)
 	if err != nil || accountInfo == nil || accountInfo.Value == nil {
 		createTokenBAtaIx = associatedtokenaccount.NewCreateInstruction(
@@ -88,10 +88,10 @@ func ClaimPartnerTradingFee() {
 		log.Fatalf("GetLatestBlockhash: %v", err)
 	}
 
-	// Create instructions slice
+	// create instructions slice
 	instructions := []solana.Instruction{ixClaim}
 
-	// Add ATA creation instructions only if needed
+	// add ATA creation instructions only if needed
 	if createTokenAAtaIx != nil {
 		instructions = append([]solana.Instruction{createTokenAAtaIx}, instructions...)
 	}

@@ -34,10 +34,8 @@ func GetPoolConfig() {
 
 	fmt.Printf("Pool config JSON: %s\n", string(jsonData))
 
-	// Print the sqrtStartPrice as a string
 	fmt.Printf("SqrtStartPrice: %s\n", poolConfig.SqrtStartPrice.String())
 
-	// Print the curve points as strings
 	fmt.Println("Curve points:")
 	for i, point := range poolConfig.Curve {
 		fmt.Printf("Curve[%d] Liquidity: %s\n", i, point.Liquidity.String())

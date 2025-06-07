@@ -33,16 +33,6 @@ func GetPoolFeeMetrics() {
 	}
 
 	fmt.Printf("Pool Fee Metrics JSON: %s\n", string(jsonData))
-
-	fmt.Println("\nCurrent Fees:")
-	fmt.Printf("Partner Base Fee: %d\n", metrics.Current.PartnerBaseFee)
-	fmt.Printf("Partner Quote Fee: %d\n", metrics.Current.PartnerQuoteFee)
-	fmt.Printf("Creator Base Fee: %d\n", metrics.Current.CreatorBaseFee)
-	fmt.Printf("Creator Quote Fee: %d\n", metrics.Current.CreatorQuoteFee)
-
-	fmt.Println("\nTotal Fees:")
-	fmt.Printf("Total Trading Base Fee: %d\n", metrics.Total.TotalTradingBaseFee)
-	fmt.Printf("Total Trading Quote Fee: %d\n", metrics.Total.TotalTradingQuoteFee)
 }
 
 func main() {
