@@ -12,7 +12,7 @@ import (
 )
 
 func GetPoolConfig() {
-	rpcClient := rpc.New("https://mainnet.helius-rpc.com/?api-key=YOUR_API_KEY")
+	rpcClient := rpc.New("https://api.mainnet-beta.solana.com")
 
 	configAddressStr := "YOUR_CONFIG_KEY"
 
@@ -46,6 +46,6 @@ func GetPoolConfig() {
 
 }
 
-func main() {
-	GetPoolConfig()
-}
+// func main() {
+// 	GetPoolConfig()
+// }

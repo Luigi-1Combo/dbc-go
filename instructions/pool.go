@@ -9,7 +9,6 @@ import (
 	"github.com/dannwee/dbc-go/helpers"
 )
 
-// InitializeVirtualPoolWithSplToken builds the instruction to initialize a virtual pool
 func InitializeVirtualPoolWithSplToken(
 	config solana.PublicKey,
 	poolCreator solana.PublicKey,
@@ -81,7 +80,6 @@ func InitializeVirtualPoolWithSplToken(
 	)
 }
 
-// Perform a swap on a DBC pool
 func Swap(
 	config solana.PublicKey,
 	pool solana.PublicKey,

@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	MainnetRPC = "https://mainnet.helius-rpc.com/?api-key=YOUR_API_KEY"
+	MainnetRPC = "https://api.mainnet-beta.solana.com"
 )
 
 func CreatePoolAndSwapUsdc() {
