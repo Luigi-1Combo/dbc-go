@@ -102,7 +102,7 @@ func Swap(
 	binary.LittleEndian.PutUint64(buf[8:], amountIn)
 	binary.LittleEndian.PutUint64(buf[16:], minOut)
 
-	poolAuthority := solana.MustPublicKeyFromBase58(common.PoolAuthority)
+	poolAuthority := helpers.DerivePoolAuthorityPDA()
 	tokenBaseProgram := solana.MustPublicKeyFromBase58(common.TokenProgram)
 	tokenQuoteProgram := solana.MustPublicKeyFromBase58(common.TokenProgram)
 	eventAuthority := helpers.DeriveEventAuthorityPDA()
