@@ -18,7 +18,7 @@ go mod tidy
 
 2. Run the examples
 
-Before running the exampels, you need to:
+Before running the examples, you need to:
 
 1. Set the private keys and public keys in the examples.
 2. Set the RPC endpoint in the examples.
