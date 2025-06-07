@@ -36,7 +36,6 @@ type PoolFeesConfig struct {
 	ReferralFeePercent uint8
 }
 
-// LiquidityDistributionConfig represents the liquidity distribution configuration
 type LiquidityDistributionConfig struct {
 	SqrtPrice uint128.Uint128
 	Liquidity uint128.Uint128
@@ -51,7 +50,6 @@ type LockedVestingConfig struct {
 	Padding                        uint64
 }
 
-// PoolConfig represents the pool configuration data structure
 type PoolConfig struct {
 	QuoteMint                   solana.PublicKey
 	FeeClaimer                  solana.PublicKey
@@ -83,4 +81,62 @@ type PoolConfig struct {
 	Padding2                    [2]uint128.Uint128
 	SqrtStartPrice              uint128.Uint128
 	Curve                       [20]LiquidityDistributionConfig
+}
+
+type VolatilityTracker struct {
+	LastUpdateTimestamp   uint64
+	Padding               [8]uint8
+	SqrtPriceReference    uint128.Uint128
+	VolatilityAccumulator uint128.Uint128
+	VolatilityReference   uint128.Uint128
+}
+
+type PoolMetrics struct {
+	TotalProtocolBaseFee  uint64
+	TotalProtocolQuoteFee uint64
+	TotalTradingBaseFee   uint64
+	TotalTradingQuoteFee  uint64
+}
+
+type Pool struct {
+	VolatilityTracker          VolatilityTracker
+	Config                     solana.PublicKey
+	Creator                    solana.PublicKey
+	BaseMint                   solana.PublicKey
+	BaseVault                  solana.PublicKey
+	QuoteVault                 solana.PublicKey
+	BaseReserve                uint64
+	QuoteReserve               uint64
+	ProtocolBaseFee            uint64
+	ProtocolQuoteFee           uint64
+	PartnerBaseFee             uint64
+	PartnerQuoteFee            uint64
+	SqrtPrice                  uint128.Uint128
+	ActivationPoint            uint64
+	PoolType                   uint8
+	IsMigrated                 uint8
+	IsPartnerWithdrawSurplus   uint8
+	IsProtocolWithdrawSurplus  uint8
+	MigrationProgress          uint8
+	IsWithdrawLeftover         uint8
+	IsCreatorWithdrawSurplus   uint8
+	MigrationFeeWithdrawStatus uint8
+	Metrics                    PoolMetrics
+	FinishCurveTimestamp       uint64
+	CreatorBaseFee             uint64
+	CreatorQuoteFee            uint64
+	Padding1                   [7]uint64
+}
+
+type PoolFeeMetrics struct {
+	Current struct {
+		PartnerBaseFee  uint64
+		PartnerQuoteFee uint64
+		CreatorBaseFee  uint64
+		CreatorQuoteFee uint64
+	}
+	Total struct {
+		TotalTradingBaseFee  uint64
+		TotalTradingQuoteFee uint64
+	}
 }

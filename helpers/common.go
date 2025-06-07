@@ -9,7 +9,7 @@ import (
 	"lukechampine.com/uint128"
 )
 
-// DeserializePoolConfig deserializes the pool config account data
+// Deserializes the pool config account data
 func DeserializePoolConfig(data []byte) (*common.PoolConfig, error) {
 	if len(data) < 8 {
 		return nil, fmt.Errorf("data too short to deserialize")
@@ -252,4 +252,165 @@ func DeserializePoolConfig(data []byte) (*common.PoolConfig, error) {
 	}
 
 	return config, nil
+}
+
+// Deserializes the pool account data
+func DeserializePool(data []byte) (*common.Pool, error) {
+	if len(data) < 8 {
+		return nil, fmt.Errorf("data too short to deserialize")
+	}
+
+	// Skip the 8-byte discriminator
+	data = data[8:]
+
+	pool := &common.Pool{}
+	reader := bytes.NewReader(data)
+
+	// Read VolatilityTracker
+	if err := binary.Read(reader, binary.LittleEndian, &pool.VolatilityTracker.LastUpdateTimestamp); err != nil {
+		return nil, fmt.Errorf("failed to read LastUpdateTimestamp: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.VolatilityTracker.Padding); err != nil {
+		return nil, fmt.Errorf("failed to read VolatilityTracker.Padding: %w", err)
+	}
+
+	// Read SqrtPriceReference (u128)
+	var sqrtPriceRefLo, sqrtPriceRefHi uint64
+	if err := binary.Read(reader, binary.LittleEndian, &sqrtPriceRefLo); err != nil {
+		return nil, fmt.Errorf("failed to read SqrtPriceReference.Lo: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &sqrtPriceRefHi); err != nil {
+		return nil, fmt.Errorf("failed to read SqrtPriceReference.Hi: %w", err)
+	}
+	pool.VolatilityTracker.SqrtPriceReference = uint128.Uint128{Lo: sqrtPriceRefLo, Hi: sqrtPriceRefHi}
+
+	// Read VolatilityAccumulator (u128)
+	var volAccLo, volAccHi uint64
+	if err := binary.Read(reader, binary.LittleEndian, &volAccLo); err != nil {
+		return nil, fmt.Errorf("failed to read VolatilityAccumulator.Lo: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &volAccHi); err != nil {
+		return nil, fmt.Errorf("failed to read VolatilityAccumulator.Hi: %w", err)
+	}
+	pool.VolatilityTracker.VolatilityAccumulator = uint128.Uint128{Lo: volAccLo, Hi: volAccHi}
+
+	// Read VolatilityReference (u128)
+	var volRefLo, volRefHi uint64
+	if err := binary.Read(reader, binary.LittleEndian, &volRefLo); err != nil {
+		return nil, fmt.Errorf("failed to read VolatilityReference.Lo: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &volRefHi); err != nil {
+		return nil, fmt.Errorf("failed to read VolatilityReference.Hi: %w", err)
+	}
+	pool.VolatilityTracker.VolatilityReference = uint128.Uint128{Lo: volRefLo, Hi: volRefHi}
+
+	// Read PublicKeys
+	if err := binary.Read(reader, binary.LittleEndian, &pool.Config); err != nil {
+		return nil, fmt.Errorf("failed to read Config: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.Creator); err != nil {
+		return nil, fmt.Errorf("failed to read Creator: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.BaseMint); err != nil {
+		return nil, fmt.Errorf("failed to read BaseMint: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.BaseVault); err != nil {
+		return nil, fmt.Errorf("failed to read BaseVault: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.QuoteVault); err != nil {
+		return nil, fmt.Errorf("failed to read QuoteVault: %w", err)
+	}
+
+	// Read uint64 fields
+	if err := binary.Read(reader, binary.LittleEndian, &pool.BaseReserve); err != nil {
+		return nil, fmt.Errorf("failed to read BaseReserve: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.QuoteReserve); err != nil {
+		return nil, fmt.Errorf("failed to read QuoteReserve: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.ProtocolBaseFee); err != nil {
+		return nil, fmt.Errorf("failed to read ProtocolBaseFee: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.ProtocolQuoteFee); err != nil {
+		return nil, fmt.Errorf("failed to read ProtocolQuoteFee: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.PartnerBaseFee); err != nil {
+		return nil, fmt.Errorf("failed to read PartnerBaseFee: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.PartnerQuoteFee); err != nil {
+		return nil, fmt.Errorf("failed to read PartnerQuoteFee: %w", err)
+	}
+
+	// Read SqrtPrice (u128)
+	var sqrtPriceLo, sqrtPriceHi uint64
+	if err := binary.Read(reader, binary.LittleEndian, &sqrtPriceLo); err != nil {
+		return nil, fmt.Errorf("failed to read SqrtPrice.Lo: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &sqrtPriceHi); err != nil {
+		return nil, fmt.Errorf("failed to read SqrtPrice.Hi: %w", err)
+	}
+	pool.SqrtPrice = uint128.Uint128{Lo: sqrtPriceLo, Hi: sqrtPriceHi}
+
+	// Read uint64 fields
+	if err := binary.Read(reader, binary.LittleEndian, &pool.ActivationPoint); err != nil {
+		return nil, fmt.Errorf("failed to read ActivationPoint: %w", err)
+	}
+
+	// Read uint8 fields
+	if err := binary.Read(reader, binary.LittleEndian, &pool.PoolType); err != nil {
+		return nil, fmt.Errorf("failed to read PoolType: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.IsMigrated); err != nil {
+		return nil, fmt.Errorf("failed to read IsMigrated: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.IsPartnerWithdrawSurplus); err != nil {
+		return nil, fmt.Errorf("failed to read IsPartnerWithdrawSurplus: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.IsProtocolWithdrawSurplus); err != nil {
+		return nil, fmt.Errorf("failed to read IsProtocolWithdrawSurplus: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.MigrationProgress); err != nil {
+		return nil, fmt.Errorf("failed to read MigrationProgress: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.IsWithdrawLeftover); err != nil {
+		return nil, fmt.Errorf("failed to read IsWithdrawLeftover: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.IsCreatorWithdrawSurplus); err != nil {
+		return nil, fmt.Errorf("failed to read IsCreatorWithdrawSurplus: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.MigrationFeeWithdrawStatus); err != nil {
+		return nil, fmt.Errorf("failed to read MigrationFeeWithdrawStatus: %w", err)
+	}
+
+	// Read Metrics
+	if err := binary.Read(reader, binary.LittleEndian, &pool.Metrics.TotalProtocolBaseFee); err != nil {
+		return nil, fmt.Errorf("failed to read TotalProtocolBaseFee: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.Metrics.TotalProtocolQuoteFee); err != nil {
+		return nil, fmt.Errorf("failed to read TotalProtocolQuoteFee: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.Metrics.TotalTradingBaseFee); err != nil {
+		return nil, fmt.Errorf("failed to read TotalTradingBaseFee: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.Metrics.TotalTradingQuoteFee); err != nil {
+		return nil, fmt.Errorf("failed to read TotalTradingQuoteFee: %w", err)
+	}
+
+	// Read uint64 fields
+	if err := binary.Read(reader, binary.LittleEndian, &pool.FinishCurveTimestamp); err != nil {
+		return nil, fmt.Errorf("failed to read FinishCurveTimestamp: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.CreatorBaseFee); err != nil {
+		return nil, fmt.Errorf("failed to read CreatorBaseFee: %w", err)
+	}
+	if err := binary.Read(reader, binary.LittleEndian, &pool.CreatorQuoteFee); err != nil {
+		return nil, fmt.Errorf("failed to read CreatorQuoteFee: %w", err)
+	}
+
+	// Read padding
+	if err := binary.Read(reader, binary.LittleEndian, &pool.Padding1); err != nil {
+		return nil, fmt.Errorf("failed to read Padding1: %w", err)
+	}
+
+	return pool, nil
 }
