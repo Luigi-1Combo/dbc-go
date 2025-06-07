@@ -51,7 +51,7 @@ func CreatePoolAndSwapSol() {
 	quoteVault := helpers.DeriveTokenVaultPDA(pool, quoteMint)
 	mintMetadata := helpers.DeriveMintMetadataPDA(baseMint)
 
-	// Build initialize virtual pool instruction
+	// build initialize virtual pool instruction
 	ixInit := instructions.InitializeVirtualPoolWithSplToken(
 		config,
 		poolCreator.PublicKey(),
@@ -98,7 +98,7 @@ func CreatePoolAndSwapSol() {
 		baseMint,
 	).Build()
 
-	// Build swap instruction
+	// build swap instruction
 	ixSwap := instructions.Swap(
 		config,
 		pool,

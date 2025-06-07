@@ -14,13 +14,9 @@ import (
 	"github.com/dannwee/dbc-go/instructions"
 )
 
-const (
-	MainnetRPC = "https://api.mainnet-beta.solana.com"
-)
-
 func CreatePoolAndSwapUsdc() {
 	ctx := context.Background()
-	client := rpc.New(MainnetRPC)
+	client := rpc.New("https://api.mainnet-beta.solana.com")
 
 	// 1) load payer and pool creator PKs
 	payer := solana.MustPrivateKeyFromBase58("YOUR_PAYER_PRIVATE_KEY")
@@ -52,7 +48,7 @@ func CreatePoolAndSwapUsdc() {
 	quoteVault := helpers.DeriveTokenVaultPDA(pool, quoteMint)
 	mintMetadata := helpers.DeriveMintMetadataPDA(baseMint)
 
-	// Build initialize virtual pool instruction
+	// build initialize virtual pool instruction
 	ixInit := instructions.InitializeVirtualPoolWithSplToken(
 		config,
 		poolCreator.PublicKey(),
@@ -68,13 +64,13 @@ func CreatePoolAndSwapUsdc() {
 		"https://test.fun",
 	)
 
-	// Amount in USDC (e.g., 1 USDC = 1_000_000)
+	// amount in USDC (e.g., 1 USDC = 1_000_000)
 	amountIn := uint64(1_000_000) // 1 USDC
 
-	// Initialize with a nil instruction
+	// initialize with a nil instruction
 	var createUSDCAtaIx solana.Instruction
 
-	// Check if USDC ATA exists and create if needed
+	// check if USDC ATA exists and create if needed
 	accountInfo, err := client.GetAccountInfo(ctx, userInputTokenAccount)
 	if err != nil || accountInfo == nil || accountInfo.Value == nil {
 		createUSDCAtaIx = associatedtokenaccount.NewCreateInstruction(
@@ -91,7 +87,7 @@ func CreatePoolAndSwapUsdc() {
 		baseMint,
 	).Build()
 
-	// Build swap instruction
+	// build swap instruction
 	ixSwap := instructions.Swap(
 		config,
 		pool,
@@ -113,14 +109,14 @@ func CreatePoolAndSwapUsdc() {
 		log.Fatalf("GetLatestBlockhash: %v", err)
 	}
 
-	// Create instructions slice
+	// create instructions slice
 	instructions := []solana.Instruction{
 		ixInit,          // your pool init
 		createBaseAtaIx, // create output base mint ATA
 		ixSwap,          // your swap
 	}
 
-	// Add USDC ATA creation instruction only if needed
+	// add USDC ATA creation instruction only if needed
 	if createUSDCAtaIx != nil {
 		instructions = append([]solana.Instruction{createUSDCAtaIx}, instructions...)
 	}
