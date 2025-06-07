@@ -34,12 +34,6 @@ func GetPool() {
 
 	fmt.Printf("Pool JSON: %s\n", string(jsonData))
 
-	// Print some key metrics
-	fmt.Printf("Base Reserve: %d\n", pool.BaseReserve)
-	fmt.Printf("Quote Reserve: %d\n", pool.QuoteReserve)
-	fmt.Printf("SqrtPrice: %s\n", pool.SqrtPrice.String())
-	fmt.Printf("Total Trading Base Fee: %d\n", pool.Metrics.TotalTradingBaseFee)
-	fmt.Printf("Total Trading Quote Fee: %d\n", pool.Metrics.TotalTradingQuoteFee)
 }
 
 // func main() {
