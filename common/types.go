@@ -36,7 +36,6 @@ type PoolFeesConfig struct {
 	ReferralFeePercent uint8
 }
 
-// LiquidityDistributionConfig represents the liquidity distribution configuration
 type LiquidityDistributionConfig struct {
 	SqrtPrice uint128.Uint128
 	Liquidity uint128.Uint128
@@ -51,7 +50,6 @@ type LockedVestingConfig struct {
 	Padding                        uint64
 }
 
-// PoolConfig represents the pool configuration data structure
 type PoolConfig struct {
 	QuoteMint                   solana.PublicKey
 	FeeClaimer                  solana.PublicKey
@@ -85,7 +83,6 @@ type PoolConfig struct {
 	Curve                       [20]LiquidityDistributionConfig
 }
 
-// VolatilityTracker represents the volatility tracker data structure
 type VolatilityTracker struct {
 	LastUpdateTimestamp   uint64
 	Padding               [8]uint8
@@ -94,7 +91,6 @@ type VolatilityTracker struct {
 	VolatilityReference   uint128.Uint128
 }
 
-// PoolMetrics represents the metrics for a pool
 type PoolMetrics struct {
 	TotalProtocolBaseFee  uint64
 	TotalProtocolQuoteFee uint64
@@ -102,7 +98,6 @@ type PoolMetrics struct {
 	TotalTradingQuoteFee  uint64
 }
 
-// Pool represents the pool data structure
 type Pool struct {
 	VolatilityTracker          VolatilityTracker
 	Config                     solana.PublicKey
@@ -133,7 +128,6 @@ type Pool struct {
 	Padding1                   [7]uint64
 }
 
-// PoolFeeMetrics represents the fee metrics for a pool
 type PoolFeeMetrics struct {
 	Current struct {
 		PartnerBaseFee  uint64

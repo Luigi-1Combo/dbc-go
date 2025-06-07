@@ -8,7 +8,7 @@ import (
 	"github.com/gagliardetto/solana-go"
 )
 
-// DeriveDbcPoolPDA derives the dbc pool address
+// Derives the dbc pool address
 func DeriveDbcPoolPDA(quoteMint, baseMint, config solana.PublicKey) solana.PublicKey {
 	// pda order: the larger public key bytes goes first
 	var mintA, mintB solana.PublicKey
@@ -32,7 +32,7 @@ func DeriveDbcPoolPDA(quoteMint, baseMint, config solana.PublicKey) solana.Publi
 	return pda
 }
 
-// DeriveTokenVaultPDA derives the dbc token vault address
+// Derives the dbc token vault address
 func DeriveTokenVaultPDA(pool, mint solana.PublicKey) solana.PublicKey {
 	seed := [][]byte{
 		[]byte("token_vault"),
@@ -66,7 +66,7 @@ func DerivePoolAuthorityPDA() solana.PublicKey {
 	return address
 }
 
-// DeriveMintMetadataPDA derives the mint metadata address
+// Derives the mint metadata address
 func DeriveMintMetadataPDA(mint solana.PublicKey) solana.PublicKey {
 	seeds := [][]byte{
 		[]byte("metadata"),

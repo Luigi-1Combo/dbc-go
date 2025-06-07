@@ -9,7 +9,7 @@ import (
 	"lukechampine.com/uint128"
 )
 
-// DeserializePoolConfig deserializes the pool config account data
+// Deserializes the pool config account data
 func DeserializePoolConfig(data []byte) (*common.PoolConfig, error) {
 	if len(data) < 8 {
 		return nil, fmt.Errorf("data too short to deserialize")
@@ -254,7 +254,7 @@ func DeserializePoolConfig(data []byte) (*common.PoolConfig, error) {
 	return config, nil
 }
 
-// DeserializePool deserializes the pool account data
+// Deserializes the pool account data
 func DeserializePool(data []byte) (*common.Pool, error) {
 	if len(data) < 8 {
 		return nil, fmt.Errorf("data too short to deserialize")

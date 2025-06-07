@@ -11,7 +11,6 @@ import (
 	solRpc "github.com/gagliardetto/solana-go/rpc"
 )
 
-// GetPoolConfig fetches and deserializes pool configuration data from the Solana blockchain
 func GetPoolConfig(ctx context.Context, configAddress solana.PublicKey, rpcClient *solRpc.Client) (*common.PoolConfig, error) {
 	account, err := rpcClient.GetAccountInfo(ctx, configAddress)
 	if err != nil {
@@ -36,7 +35,6 @@ func GetPoolConfig(ctx context.Context, configAddress solana.PublicKey, rpcClien
 	return helpers.DeserializePoolConfig(data)
 }
 
-// GetPoolFeeMetrics fetches and returns the fee metrics for a pool
 func GetPoolFeeMetrics(ctx context.Context, poolAddress solana.PublicKey, rpcClient *solRpc.Client) (*common.PoolFeeMetrics, error) {
 	pool, err := GetPool(ctx, poolAddress, rpcClient)
 	if err != nil {
@@ -58,7 +56,6 @@ func GetPoolFeeMetrics(ctx context.Context, poolAddress solana.PublicKey, rpcCli
 	return metrics, nil
 }
 
-// GetPool fetches and deserializes pool data from the Solana blockchain
 func GetPool(ctx context.Context, poolAddress solana.PublicKey, rpcClient *solRpc.Client) (*common.Pool, error) {
 	account, err := rpcClient.GetAccountInfo(ctx, poolAddress)
 	if err != nil {
