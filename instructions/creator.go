@@ -67,3 +67,42 @@ func ClaimCreatorTradingFee(
 		buf,
 	)
 }
+
+func TransferPoolCreator(
+	virtualPool solana.PublicKey,
+	config solana.PublicKey,
+	creator solana.PublicKey,
+	newCreator solana.PublicKey,
+	migrationMetadata solana.PublicKey,
+) solana.Instruction {
+	disc := []byte{20, 7, 169, 33, 58, 147, 166, 33}
+	eventAuthority := helpers.DeriveEventAuthorityPDA()
+
+	acctMeta := solana.AccountMetaSlice{
+		// 1. virtual_pool (writable)
+		{PublicKey: virtualPool, IsSigner: false, IsWritable: true},
+		// 2. config
+		{PublicKey: config, IsSigner: false, IsWritable: false},
+		// 3. creator (signer)
+		{PublicKey: creator, IsSigner: true, IsWritable: false},
+		// 4. new_creator
+		{PublicKey: newCreator, IsSigner: false, IsWritable: false},
+		// 5. event_authority
+		{PublicKey: eventAuthority, IsSigner: false, IsWritable: false},
+		// 6. program
+		{PublicKey: solana.MustPublicKeyFromBase58(common.DbcProgramID), IsSigner: false, IsWritable: false},
+	}
+
+	// Add migration metadata as a remaining account
+	acctMeta = append(acctMeta, &solana.AccountMeta{
+		PublicKey:  migrationMetadata,
+		IsSigner:   false,
+		IsWritable: false,
+	})
+
+	return solana.NewInstruction(
+		solana.MustPublicKeyFromBase58(common.DbcProgramID),
+		acctMeta,
+		disc,
+	)
+}

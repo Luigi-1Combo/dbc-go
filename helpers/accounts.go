@@ -128,3 +128,16 @@ func DeriveMintMetadataPDA(mint solana.PublicKey) solana.PublicKey {
 	}
 	return pda
 }
+
+// Derives the DAMM V1 migration metadata PDA
+func DeriveDammV1MigrationMetadataPda(pool solana.PublicKey) solana.PublicKey {
+	seeds := [][]byte{
+		[]byte("meteora"),
+		pool.Bytes(),
+	}
+	pda, _, err := solana.FindProgramAddress(seeds, solana.MustPublicKeyFromBase58(common.DbcProgramID))
+	if err != nil {
+		log.Fatalf("find DAMM V1 migration metadata PDA: %v", err)
+	}
+	return pda
+}
