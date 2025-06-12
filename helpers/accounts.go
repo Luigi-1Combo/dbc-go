@@ -32,6 +32,55 @@ func DeriveDbcPoolPDA(quoteMint, baseMint, config solana.PublicKey) solana.Publi
 	return pda
 }
 
+// Derives the DAMM V1 pool address
+func DeriveDammV1PoolPDA(config, tokenAMint, tokenBMint solana.PublicKey) solana.PublicKey {
+	// Get the first and second keys based on byte comparison
+	var firstKey, secondKey solana.PublicKey
+	if bytes.Compare(tokenAMint.Bytes(), tokenBMint.Bytes()) > 0 {
+		firstKey = tokenAMint
+		secondKey = tokenBMint
+	} else {
+		firstKey = tokenBMint
+		secondKey = tokenAMint
+	}
+
+	seeds := [][]byte{
+		firstKey.Bytes(),
+		secondKey.Bytes(),
+		config.Bytes(),
+	}
+	pda, _, err := solana.FindProgramAddress(seeds, solana.MustPublicKeyFromBase58(common.DammV1ProgramID))
+	if err != nil {
+		log.Fatalf("find DAMM V1 pool PDA: %v", err)
+	}
+	return pda
+}
+
+// Derives the DAMM V2 pool address
+func DeriveDammV2PoolPDA(config, tokenAMint, tokenBMint solana.PublicKey) solana.PublicKey {
+	// Get the first and second keys based on byte comparison
+	var firstKey, secondKey solana.PublicKey
+	if bytes.Compare(tokenAMint.Bytes(), tokenBMint.Bytes()) > 0 {
+		firstKey = tokenAMint
+		secondKey = tokenBMint
+	} else {
+		firstKey = tokenBMint
+		secondKey = tokenAMint
+	}
+
+	seeds := [][]byte{
+		[]byte("pool"),
+		config.Bytes(),
+		firstKey.Bytes(),
+		secondKey.Bytes(),
+	}
+	pda, _, err := solana.FindProgramAddress(seeds, solana.MustPublicKeyFromBase58(common.DammV2ProgramID))
+	if err != nil {
+		log.Fatalf("find DAMM V2 pool PDA: %v", err)
+	}
+	return pda
+}
+
 // Derives the dbc token vault address
 func DeriveTokenVaultPDA(pool, mint solana.PublicKey) solana.PublicKey {
 	seed := [][]byte{
