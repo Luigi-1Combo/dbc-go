@@ -93,7 +93,6 @@ func TransferPoolCreator(
 		{PublicKey: solana.MustPublicKeyFromBase58(common.DbcProgramID), IsSigner: false, IsWritable: false},
 	}
 
-	// Add migration metadata as a remaining account
 	acctMeta = append(acctMeta, &solana.AccountMeta{
 		PublicKey:  migrationMetadata,
 		IsSigner:   false,
