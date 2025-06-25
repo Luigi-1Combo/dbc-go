@@ -35,6 +35,6 @@ func GetPoolFeeMetrics() {
 	fmt.Printf("Pool Fee Metrics JSON: %s\n", string(jsonData))
 }
 
-func main() {
-	GetPoolFeeMetrics()
-}
+// func main() {
+// 	GetPoolFeeMetrics()
+// }

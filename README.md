@@ -37,3 +37,5 @@ go run examples/<file-name>.go
 - [Fetch pool configuration](./examples/get_pool_config.go)
 - [Fetch pool fee metrics](./examples/get_pool_fee_metrics.go)
 - [Fetch pool](./examples/get_pool.go)
+- [Fetch bonding curve progress](./examples/get_bonding_curve_progress.go)
+- [Transfer pool creator fee](./examples/transfer_pool_creator_fee.go)
