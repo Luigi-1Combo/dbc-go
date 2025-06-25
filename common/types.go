@@ -5,6 +5,13 @@ import (
 	"lukechampine.com/uint128"
 )
 
+type Rounding int
+
+const (
+	Up Rounding = iota
+	Down
+)
+
 type BaseFeeConfig struct {
 	CliffFeeNumerator uint64
 	PeriodFrequency   uint64
