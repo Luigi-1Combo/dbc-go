@@ -10,9 +10,9 @@ import (
 	associatedtokenaccount "github.com/gagliardetto/solana-go/programs/associated-token-account"
 	"github.com/gagliardetto/solana-go/rpc"
 
-	"github.com/dannwee/dbc-go/common"
-	"github.com/dannwee/dbc-go/helpers"
-	"github.com/dannwee/dbc-go/instructions"
+	"github.com/Luigi-1Combo/dbc-go/common"
+	"github.com/Luigi-1Combo/dbc-go/helpers"
+	"github.com/Luigi-1Combo/dbc-go/instructions"
 )
 
 func ClaimPartnerTradingFee() {

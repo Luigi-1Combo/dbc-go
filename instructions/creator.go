@@ -5,8 +5,8 @@ import (
 
 	"github.com/gagliardetto/solana-go"
 
-	"github.com/dannwee/dbc-go/common"
-	"github.com/dannwee/dbc-go/helpers"
+	"github.com/Luigi-1Combo/dbc-go/common"
+	"github.com/Luigi-1Combo/dbc-go/helpers"
 )
 
 func ClaimCreatorTradingFee(

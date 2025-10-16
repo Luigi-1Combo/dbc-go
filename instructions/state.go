@@ -5,8 +5,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/dannwee/dbc-go/common"
-	"github.com/dannwee/dbc-go/helpers"
+	"github.com/Luigi-1Combo/dbc-go/common"
+	"github.com/Luigi-1Combo/dbc-go/helpers"
 	"github.com/gagliardetto/solana-go"
 	solRpc "github.com/gagliardetto/solana-go/rpc"
 )

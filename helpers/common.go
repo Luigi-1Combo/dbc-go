@@ -5,7 +5,7 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/dannwee/dbc-go/common"
+	"github.com/Luigi-1Combo/dbc-go/common"
 	"lukechampine.com/uint128"
 )
 

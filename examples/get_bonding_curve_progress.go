@@ -6,8 +6,8 @@ import (
 	"log"
 	"math/big"
 
-	"github.com/dannwee/dbc-go/instructions"
-	"github.com/dannwee/dbc-go/math"
+	"github.com/Luigi-1Combo/dbc-go/instructions"
+	"github.com/Luigi-1Combo/dbc-go/math"
 	"github.com/gagliardetto/solana-go"
 	"github.com/gagliardetto/solana-go/rpc"
 )

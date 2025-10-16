@@ -9,8 +9,8 @@ import (
 	"github.com/gagliardetto/solana-go"
 	"github.com/gagliardetto/solana-go/rpc"
 
-	"github.com/dannwee/dbc-go/helpers"
-	"github.com/dannwee/dbc-go/instructions"
+	"github.com/Luigi-1Combo/dbc-go/helpers"
+	"github.com/Luigi-1Combo/dbc-go/instructions"
 )
 
 func TransferPoolCreator() {
